@@ -1,0 +1,482 @@
+<html>
+<head>
+<title>Operator.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Operator.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">vehicles</span><span class="s2">.</span><span class="s1">Bike</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">vehicles</span><span class="s2">.</span><span class="s1">Car</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">vehicles</span><span class="s2">.</span><span class="s1">Van</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">vehicles</span><span class="s2">.</span><span class="s1">Vehicle</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">Instant</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDateTime</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">ZoneId</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Date</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Optional</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Scanner</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">.</span><span class="s1">Collectors</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Operator </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">RentalCars rentalCars</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">RentalProces</span><span class="s2">&gt; </span><span class="s1">bookings</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">VehicleInventoryManagement inventoryManagement</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Customer</span><span class="s2">&gt; </span><span class="s1">customers</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Vehicle</span><span class="s2">&gt; </span><span class="s1">vehicles</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">Operator</span><span class="s2">(</span><span class="s1">RentalCars rentalCars</span><span class="s2">, </span><span class="s1">VehicleInventoryManagement inventoryManagement</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">rentalCars </span><span class="s2">= </span><span class="s1">rentalCars</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">inventoryManagement </span><span class="s2">= </span><span class="s1">inventoryManagement</span><span class="s2">;</span>
+        <span class="s1">customers </span><span class="s2">= </span><span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">getCustomers</span><span class="s2">();</span>
+        <span class="s1">vehicles </span><span class="s2">= </span><span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">getVehicles</span><span class="s2">();</span>
+
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">startProgram</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Rental Management System Menu: &quot;</span><span class="s2">);</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+            <span class="s1">String massage </span><span class="s2">= </span><span class="s3">&quot;&quot;&quot; 
+                    1. Add Vehicle 
+                    2. Delete Vehicle 
+                    3. Rent Vehicle 
+                    4. Return Vehicle 
+                    5. Register Customer 
+                    6. Save State to File 
+                    7. Load State from File 
+                    8. Generate Reports 
+                    9. Exit 
+                    &quot;&quot;&quot;</span><span class="s2">;</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">massage</span><span class="s2">);</span>
+            <span class="s1">String operation </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+            <span class="s0">switch </span><span class="s2">(</span><span class="s1">operation</span><span class="s2">) {</span>
+                <span class="s0">case </span><span class="s3">&quot;1&quot; </span><span class="s1">-&gt; addVehicle</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;2&quot; </span><span class="s1">-&gt; deleteVehicle</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;3&quot; </span><span class="s1">-&gt; rentVehicle</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;4&quot; </span><span class="s1">-&gt; returnVehicle</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;5&quot; </span><span class="s1">-&gt; addCustomer</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;6&quot; </span><span class="s1">-&gt; saveStateToFile</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;7&quot; </span><span class="s1">-&gt; loadStateFromFile</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;8&quot; </span><span class="s1">-&gt; generateReports</span><span class="s2">();</span>
+                <span class="s0">case </span><span class="s3">&quot;10&quot; </span><span class="s1">-&gt; exitProgram</span><span class="s2">();</span>
+                <span class="s0">default </span><span class="s1">-&gt; System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;WARNING - &quot; </span><span class="s2">+ </span><span class="s1">operation </span><span class="s2">+ </span><span class="s3">&quot;is not correct &quot;</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">generateReports</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Generating reports:&quot;</span><span class="s2">);</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Select report type:&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;1. Customer Rental History&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;2. Vehicle Booking History&quot;</span><span class="s2">);</span>
+        <span class="s0">int </span><span class="s1">reportType </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextInt</span><span class="s2">();</span>
+        <span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+
+        <span class="s0">switch </span><span class="s2">(</span><span class="s1">reportType</span><span class="s2">) {</span>
+            <span class="s0">case </span><span class="s4">1</span><span class="s2">:</span>
+                <span class="s1">generateCustomerRentalHistoryReport</span><span class="s2">();</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s4">2</span><span class="s2">:</span>
+                <span class="s1">generateVehicleBookingHistoryReport</span><span class="s2">();</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s0">default</span><span class="s2">:</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Invalid report type selected.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+    <span class="s0">private void </span><span class="s1">generateVehicleBookingHistoryReport</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Generating Vehicle Booking History Report:&quot;</span><span class="s2">);</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Enter vehicle ID: &quot;</span><span class="s2">);</span>
+        <span class="s0">int </span><span class="s1">vehicleId </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextInt</span><span class="s2">();</span>
+        <span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">Vehicle</span><span class="s2">&gt; </span><span class="s1">vehicle </span><span class="s2">= </span><span class="s1">vehicles</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">filter</span><span class="s2">(</span><span class="s1">v -&gt; v</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">() == </span><span class="s1">vehicleId</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">findAny</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">.</span><span class="s1">isPresent</span><span class="s2">()) {</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">RentalProces</span><span class="s2">&gt; </span><span class="s1">vehicleBookings </span><span class="s2">= </span><span class="s1">bookings</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                    <span class="s2">.</span><span class="s1">filter</span><span class="s2">(</span><span class="s1">booking -&gt; booking</span><span class="s2">.</span><span class="s1">getVehicle</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">.</span><span class="s1">get</span><span class="s2">()))</span>
+                    <span class="s2">.</span><span class="s1">collect</span><span class="s2">(</span><span class="s1">Collectors</span><span class="s2">.</span><span class="s1">toList</span><span class="s2">());</span>
+
+            <span class="s1">saveReportToFile</span><span class="s2">(</span><span class="s3">&quot;VehicleBookingHistoryReport.txt&quot;</span><span class="s2">, </span><span class="s1">generateBookingHistoryReport</span><span class="s2">(</span><span class="s1">vehicleBookings</span><span class="s2">));</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Report generated successfully.&quot;</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Vehicle not found.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">String generateBookingHistoryReport</span><span class="s2">(</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">RentalProces</span><span class="s2">&gt; </span><span class="s1">vehicleBookings</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s3">&quot;Customer Rental History Report:</span><span class="s0">\n</span><span class="s3">&quot; </span><span class="s2">+ </span><span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">toString</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">generateCustomerRentalHistoryReport</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Generating Customer Rental History Report:&quot;</span><span class="s2">);</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Enter customer name: &quot;</span><span class="s2">);</span>
+        <span class="s1">String customerName </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">Customer</span><span class="s2">&gt; </span><span class="s1">customer </span><span class="s2">= </span><span class="s1">customers</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">filter</span><span class="s2">(</span><span class="s1">c -&gt; c</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">().</span><span class="s1">equalsIgnoreCase</span><span class="s2">(</span><span class="s1">customerName</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">findAny</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">customer</span><span class="s2">.</span><span class="s1">isPresent</span><span class="s2">()) {</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">RentalProces</span><span class="s2">&gt; </span><span class="s1">customerRentals </span><span class="s2">= </span><span class="s1">bookings</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                    <span class="s2">.</span><span class="s1">filter</span><span class="s2">(</span><span class="s1">booking -&gt; booking</span><span class="s2">.</span><span class="s1">getCustomer</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">customer</span><span class="s2">.</span><span class="s1">get</span><span class="s2">()))</span>
+                    <span class="s2">.</span><span class="s1">collect</span><span class="s2">(</span><span class="s1">Collectors</span><span class="s2">.</span><span class="s1">toList</span><span class="s2">());</span>
+
+            <span class="s1">saveReportToFile</span><span class="s2">(</span><span class="s3">&quot;CustomerRentalHistoryReport.txt&quot;</span><span class="s2">, </span><span class="s1">generateRentalHistoryReport</span><span class="s2">(</span><span class="s1">customerRentals</span><span class="s2">));</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Report generated successfully.&quot;</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Customer not found.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">String generateRentalHistoryReport</span><span class="s2">(</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">RentalProces</span><span class="s2">&gt; </span><span class="s1">customerRentals</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s3">&quot;Customer Rental History Report:</span><span class="s0">\n</span><span class="s3">&quot; </span><span class="s2">+ </span><span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">toString</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">saveReportToFile</span><span class="s2">(</span><span class="s1">String fileName</span><span class="s2">, </span><span class="s1">String report</span><span class="s2">) {</span>
+        <span class="s0">try </span><span class="s2">(</span><span class="s1">FileWriter writer </span><span class="s2">= </span><span class="s0">new </span><span class="s1">FileWriter</span><span class="s2">(</span><span class="s1">fileName</span><span class="s2">)) {</span>
+            <span class="s1">writer</span><span class="s2">.</span><span class="s1">write</span><span class="s2">(</span><span class="s1">report</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException e</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Error saving report to file: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">returnVehicle</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Renting a vehicle:&quot;</span><span class="s2">);</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+
+        <span class="s1">Vehicle vehicle</span><span class="s2">;</span>
+        <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+            <span class="s1">String massage </span><span class="s2">= </span><span class="s3">&quot;&quot;&quot; 
+                    Car - enter 1 
+                    Van - enter 2 
+                    Bike - enter 3 
+                    &quot;&quot;&quot;</span><span class="s2">;</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">massage</span><span class="s2">);</span>
+            <span class="s1">String operation </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+
+            <span class="s0">switch </span><span class="s2">(</span><span class="s1">operation</span><span class="s2">) {</span>
+                <span class="s0">case </span><span class="s3">&quot;1&quot;</span><span class="s2">: {</span>
+                    <span class="s1">vehicle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Car</span><span class="s2">();</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">case </span><span class="s3">&quot;2&quot;</span><span class="s2">: {</span>
+                    <span class="s1">vehicle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Van</span><span class="s2">();</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">case </span><span class="s3">&quot;3&quot;</span><span class="s2">: {</span>
+                    <span class="s1">vehicle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Bike</span><span class="s2">();</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">default</span><span class="s2">: {</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;WARNING &quot; </span><span class="s2">+ </span><span class="s1">operation </span><span class="s2">+ </span><span class="s3">&quot; is not correct &quot;</span><span class="s2">);</span>
+                    <span class="s0">return</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">.</span><span class="s1">toString</span><span class="s2">());</span>
+
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@SuppressWarnings</span><span class="s2">(</span><span class="s3">&quot;all&quot;</span><span class="s2">)</span>
+    <span class="s0">private void </span><span class="s1">loadStateFromFile</span><span class="s2">() {</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Enter filePath&quot;</span><span class="s2">);</span>
+        <span class="s1">String filePath </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+        <span class="s0">try </span><span class="s2">(</span><span class="s1">ObjectInputStream objectInputStream </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ObjectInputStream</span><span class="s2">(</span><span class="s0">new </span><span class="s1">FileInputStream</span><span class="s2">(</span><span class="s1">filePath</span><span class="s2">))) {</span>
+            <span class="s1">customers </span><span class="s2">= (</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Customer</span><span class="s2">&gt;) </span><span class="s1">objectInputStream</span><span class="s2">.</span><span class="s1">readObject</span><span class="s2">();</span>
+            <span class="s1">vehicles </span><span class="s2">= (</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Vehicle</span><span class="s2">&gt;) </span><span class="s1">objectInputStream</span><span class="s2">.</span><span class="s1">readObject</span><span class="s2">();</span>
+            <span class="s1">bookings </span><span class="s2">= (</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">RentalProces</span><span class="s2">&gt;) </span><span class="s1">objectInputStream</span><span class="s2">.</span><span class="s1">readObject</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException </span><span class="s2">| </span><span class="s1">ClassNotFoundException e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">saveStateToFile</span><span class="s2">() {</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Enter filePath&quot;</span><span class="s2">);</span>
+        <span class="s1">String filePath </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+        <span class="s0">try </span><span class="s2">(</span><span class="s1">ObjectOutputStream outputStream </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ObjectOutputStream</span><span class="s2">(</span><span class="s0">new </span><span class="s1">FileOutputStream</span><span class="s2">(</span><span class="s1">filePath</span><span class="s2">))) {</span>
+            <span class="s1">outputStream</span><span class="s2">.</span><span class="s1">writeObject</span><span class="s2">(</span><span class="s1">vehicles</span><span class="s2">);</span>
+            <span class="s1">outputStream</span><span class="s2">.</span><span class="s1">writeObject</span><span class="s2">(</span><span class="s1">customers</span><span class="s2">);</span>
+            <span class="s1">outputStream</span><span class="s2">.</span><span class="s1">writeObject</span><span class="s2">(</span><span class="s1">bookings</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;State saved successfully. &quot;</span><span class="s2">);</span>
+            <span class="s1">outputStream</span><span class="s2">.</span><span class="s1">flush</span><span class="s2">();</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException e</span><span class="s2">) {</span>
+            <span class="s0">throw new </span><span class="s1">RuntimeException</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">exitProgram</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Exiting Rental Vehicle. Goodbye!&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">exit</span><span class="s2">(</span><span class="s4">0</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">addCustomer</span><span class="s2">() {</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Here you can register a customer - &quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Please enter the customer name - &quot;</span><span class="s2">);</span>
+        <span class="s1">String name </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Please enter the customer email - &quot;</span><span class="s2">);</span>
+        <span class="s1">String email </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Please enter customer license number - &quot;</span><span class="s2">);</span>
+        <span class="s0">int </span><span class="s1">licenseNumber </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextInt</span><span class="s2">();</span>
+        <span class="s1">Customer customer </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Customer</span><span class="s2">(</span><span class="s1">name</span><span class="s2">, </span><span class="s1">email</span><span class="s2">, </span><span class="s1">licenseNumber</span><span class="s2">);</span>
+        <span class="s1">customers</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">customer</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">addVehicle</span><span class="s2">() {</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+            <span class="s1">String massage </span><span class="s2">= </span><span class="s3">&quot;&quot;&quot; 
+                    Car - enter 1 
+                    Van - enter 2 
+                    Bike - enter 3 
+                    &quot;&quot;&quot;</span><span class="s2">;</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">massage</span><span class="s2">);</span>
+            <span class="s1">String operation </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+            <span class="s0">switch </span><span class="s2">(</span><span class="s1">operation</span><span class="s2">) {</span>
+                <span class="s0">case </span><span class="s3">&quot;1&quot; </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                    <span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">addVehicle</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Car</span><span class="s2">());</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Car is added&quot;</span><span class="s2">);</span>
+                    <span class="s0">return</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">case </span><span class="s3">&quot;2&quot; </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                    <span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">addVehicle</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Van</span><span class="s2">());</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Van is added&quot;</span><span class="s2">);</span>
+                    <span class="s0">return</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">case </span><span class="s3">&quot;3&quot; </span><span class="s1">-&gt; </span><span class="s2">{</span>
+                    <span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">addVehicle</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Bike</span><span class="s2">());</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Bike is added&quot;</span><span class="s2">);</span>
+                <span class="s2">}</span>
+                <span class="s0">default </span><span class="s1">-&gt; System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;WARNING &quot; </span><span class="s2">+ </span><span class="s1">operation </span><span class="s2">+ </span><span class="s3">&quot; is not correct &quot;</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">displayAvailableVehicles</span><span class="s2">(</span><span class="s1">Date startDate</span><span class="s2">, </span><span class="s1">Date endDate</span><span class="s2">) {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Available Vehicles for Rent:&quot;</span><span class="s2">);</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Vehicle vehicle </span><span class="s2">: </span><span class="s1">inventoryManagement</span><span class="s2">.</span><span class="s1">getAllVehicles</span><span class="s2">()) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">isVehicleAvailable</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">, </span><span class="s1">startDate</span><span class="s2">, </span><span class="s1">endDate</span><span class="s2">)) {</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">isVehicleAvailable</span><span class="s2">(</span><span class="s1">Vehicle vehicle</span><span class="s2">, </span><span class="s1">Date startDate</span><span class="s2">, </span><span class="s1">Date endDate</span><span class="s2">) {</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">RentalProces rentalProcess </span><span class="s2">: </span><span class="s1">rentalCars</span><span class="s2">.</span><span class="s1">bookings</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">rentalProcess</span><span class="s2">.</span><span class="s1">getVehicle</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">) &amp;&amp; </span><span class="s1">isOverlap</span><span class="s2">(</span><span class="s1">startDate</span><span class="s2">, </span><span class="s1">endDate</span><span class="s2">, </span><span class="s1">rentalProcess</span><span class="s2">.</span><span class="s1">getStartDate</span><span class="s2">(), </span><span class="s1">rentalProcess</span><span class="s2">.</span><span class="s1">getEndDate</span><span class="s2">())) {</span>
+                <span class="s0">return false</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s0">return true</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">displayOfRentVehicle</span><span class="s2">() {</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s1">Vehicle vehicle </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s1">Customer customer </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s1">loop</span><span class="s2">:</span>
+        <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+            <span class="s1">displayAllVehicle</span><span class="s2">();</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Chose a vehicle by ID&quot;</span><span class="s2">);</span>
+            <span class="s1">String id </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+            <span class="s0">try </span><span class="s2">{</span>
+                <span class="s1">vehicle </span><span class="s2">= </span><span class="s1">getVehicleById</span><span class="s2">(</span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">id</span><span class="s2">));</span>
+            <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">NumberFormatException e</span><span class="s2">) {</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;WRONG ID&quot;</span><span class="s2">);</span>
+                <span class="s0">break </span><span class="s1">loop</span><span class="s2">;</span>
+            <span class="s2">}</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Chose a customer by license&quot;</span><span class="s2">);</span>
+            <span class="s1">String license </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+            <span class="s0">try </span><span class="s2">{</span>
+                <span class="s1">getCustomerById</span><span class="s2">(</span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">license</span><span class="s2">));</span>
+
+            <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">NumberFormatException e</span><span class="s2">) {</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;WRONG ID&quot;</span><span class="s2">);</span>
+                <span class="s0">break </span><span class="s1">loop</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+        <span class="s2">}</span>
+
+        <span class="s1">scanner</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">Customer getCustomerById</span><span class="s2">(</span><span class="s0">int </span><span class="s1">license</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">NumberFormatException </span><span class="s2">{</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Customer customer </span><span class="s2">: </span><span class="s1">customers</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">customer</span><span class="s2">.</span><span class="s1">getLicenseNumber</span><span class="s2">() == </span><span class="s1">license</span><span class="s2">) {</span>
+                <span class="s0">return </span><span class="s1">customer</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s0">return null</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">Vehicle getVehicleById</span><span class="s2">(</span><span class="s0">int </span><span class="s1">id</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">NumberFormatException </span><span class="s2">{</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Vehicle vehicle </span><span class="s2">: </span><span class="s1">vehicles</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">() == </span><span class="s1">id</span><span class="s2">) {</span>
+                <span class="s0">return </span><span class="s1">vehicle</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s0">return null</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">rentVehicle</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Renting a vehicle:&quot;</span><span class="s2">);</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Enter name customer - &quot;</span><span class="s2">);</span>
+        <span class="s1">String name </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">Customer</span><span class="s2">&gt; </span><span class="s1">customer </span><span class="s2">= </span><span class="s1">customers</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">filter</span><span class="s2">(</span><span class="s1">user -&gt; user</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">().</span><span class="s1">equalsIgnoreCase</span><span class="s2">(</span><span class="s1">name</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">findAny</span><span class="s2">();</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">customer</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;User name not found&quot;</span><span class="s2">);</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Enter startDate - &quot;</span><span class="s2">);</span>
+        <span class="s1">String startDateStr </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Enter endDate - &quot;</span><span class="s2">);</span>
+        <span class="s1">String endDateStr </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+        <span class="s1">LocalDateTime end </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s1">LocalDateTime start </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">end </span><span class="s2">= </span><span class="s1">LocalDateTime</span><span class="s2">.</span><span class="s1">parse</span><span class="s2">(</span><span class="s1">endDateStr</span><span class="s2">);</span>
+            <span class="s1">start </span><span class="s2">= </span><span class="s1">LocalDateTime</span><span class="s2">.</span><span class="s1">parse</span><span class="s2">(</span><span class="s1">startDateStr</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Problem of start or end date&quot;</span><span class="s2">);</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">start</span><span class="s2">.</span><span class="s1">isAfter</span><span class="s2">(</span><span class="s1">end</span><span class="s2">)) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;start is after of end&quot;</span><span class="s2">);</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s1">Vehicle vehicle</span><span class="s2">;</span>
+        <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+            <span class="s1">String massage </span><span class="s2">= </span><span class="s3">&quot;&quot;&quot; 
+                    Car - enter 1 
+                    Van - enter 2 
+                    Bike - enter 3 
+                    &quot;&quot;&quot;</span><span class="s2">;</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">massage</span><span class="s2">);</span>
+            <span class="s1">String operation </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+
+            <span class="s0">switch </span><span class="s2">(</span><span class="s1">operation</span><span class="s2">) {</span>
+                <span class="s0">case </span><span class="s3">&quot;1&quot;</span><span class="s2">: {</span>
+                    <span class="s1">vehicle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Car</span><span class="s2">();</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Car is added&quot;</span><span class="s2">);</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">case </span><span class="s3">&quot;2&quot;</span><span class="s2">: {</span>
+                    <span class="s1">vehicle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Van</span><span class="s2">();</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Van is added&quot;</span><span class="s2">);</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">case </span><span class="s3">&quot;3&quot;</span><span class="s2">: {</span>
+                    <span class="s1">vehicle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Bike</span><span class="s2">();</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Bike is added&quot;</span><span class="s2">);</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s2">}</span>
+                <span class="s0">default</span><span class="s2">: {</span>
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;WARNING &quot; </span><span class="s2">+ </span><span class="s1">operation </span><span class="s2">+ </span><span class="s3">&quot; is not correct &quot;</span><span class="s2">);</span>
+                    <span class="s0">return</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+
+            <span class="s1">RentalProces rentalProces </span><span class="s2">= </span><span class="s0">new </span><span class="s1">RentalProces</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">, </span><span class="s1">customer</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(), </span><span class="s1">convertLocalDateTimeToDate</span><span class="s2">(</span><span class="s1">start</span><span class="s2">), </span><span class="s1">convertLocalDateTimeToDate</span><span class="s2">(</span><span class="s1">end</span><span class="s2">));</span>
+            <span class="s1">bookings</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">rentalProces</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+
+    <span class="s0">private static </span><span class="s1">Date convertLocalDateTimeToDate</span><span class="s2">(</span><span class="s1">LocalDateTime localDateTime</span><span class="s2">) {</span>
+        <span class="s1">Instant instant </span><span class="s2">= </span><span class="s1">localDateTime</span><span class="s2">.</span><span class="s1">atZone</span><span class="s2">(</span><span class="s1">ZoneId</span><span class="s2">.</span><span class="s1">systemDefault</span><span class="s2">()).</span><span class="s1">toInstant</span><span class="s2">();</span>
+        <span class="s1">Date date </span><span class="s2">= </span><span class="s1">Date</span><span class="s2">.</span><span class="s1">from</span><span class="s2">(</span><span class="s1">instant</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s1">date</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">displayAvailableVehicle</span><span class="s2">(</span><span class="s1">Date startDate</span><span class="s2">, </span><span class="s1">Date endDate</span><span class="s2">) {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Available Vehicles for Rent:&quot;</span><span class="s2">);</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Vehicle vehicle </span><span class="s2">: </span><span class="s1">inventoryManagement</span><span class="s2">.</span><span class="s1">getAllVehicles</span><span class="s2">()) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">isVehicleAvailable</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">, </span><span class="s1">startDate</span><span class="s2">, </span><span class="s1">endDate</span><span class="s2">)) {</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">isOverlap</span><span class="s2">(</span><span class="s1">Date start1</span><span class="s2">, </span><span class="s1">Date end1</span><span class="s2">, </span><span class="s1">Date start2</span><span class="s2">, </span><span class="s1">Date end2</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">start1</span><span class="s2">.</span><span class="s1">before</span><span class="s2">(</span><span class="s1">end2</span><span class="s2">) &amp;&amp; </span><span class="s1">end1</span><span class="s2">.</span><span class="s1">after</span><span class="s2">(</span><span class="s1">start2</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">displayAllVehicle</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;List of Vehicles in the Inventory:&quot;</span><span class="s2">);</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Vehicle vehicle </span><span class="s2">: </span><span class="s1">inventoryManagement</span><span class="s2">.</span><span class="s1">getAllVehicles</span><span class="s2">()) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">vehicle</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">displayAllCustomers</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;List of Vehicles in the Inventory:&quot;</span><span class="s2">);</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Customer customer </span><span class="s2">: </span><span class="s1">customers</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">customer</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">deleteVehicle</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Deleting a vehicle from the inventory:&quot;</span><span class="s2">);</span>
+
+        <span class="s1">displayAllVehicle</span><span class="s2">();</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Enter the ID of the vehicle to delete: &quot;</span><span class="s2">);</span>
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+        <span class="s0">int </span><span class="s1">vehicleId </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextInt</span><span class="s2">();</span>
+        <span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+
+        <span class="s1">Vehicle vehicleToDelete </span><span class="s2">= </span><span class="s1">inventoryManagement</span><span class="s2">.</span><span class="s1">findVehicleById</span><span class="s2">(</span><span class="s1">vehicleId</span><span class="s2">);</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Are you sure you want to delete the following vehicle?&quot;</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">vehicleToDelete</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Enter 'yes' to confirm: &quot;</span><span class="s2">);</span>
+        <span class="s1">String confirmation </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">confirmation</span><span class="s2">.</span><span class="s1">equalsIgnoreCase</span><span class="s2">(</span><span class="s3">&quot;yes&quot;</span><span class="s2">)) {</span>
+            <span class="s1">inventoryManagement</span><span class="s2">.</span><span class="s1">deleteVehicle</span><span class="s2">(</span><span class="s1">vehicleToDelete</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Vehicle deleted successfully.&quot;</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Deletion canceled.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
